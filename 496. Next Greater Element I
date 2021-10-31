@@ -1,0 +1,34 @@
+//https://leetcode.com/problems/next-greater-element-i/
+
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        
+        int n = (int)nums2.size();
+        int m = (int)nums1.size();
+        
+        unordered_map<int, int> mpp;
+        
+        stack<int> s;
+        for(int i = n - 1; i >= 0; i--)
+        {
+            while(!s.empty() && nums2[s.top()] < nums2[i])
+            {
+                s.pop();
+            }
+            
+            if(!s.empty()) mpp[nums2[i]] = nums2[s.top()];
+            else mpp[nums2[i]] = -1;
+            
+            s.push(i);
+        }
+        
+        vector<int> ans;
+        for(int i = 0; i < m; i++)
+        {
+            ans.push_back(mpp[nums1[i]]);
+        }
+        
+        return ans;
+    }
+};
