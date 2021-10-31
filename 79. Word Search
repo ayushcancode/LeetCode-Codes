@@ -1,0 +1,56 @@
+//https://leetcode.com/problems/word-search/
+
+class Solution {
+public:
+    
+    const int dx[4] = {-1, 0, 1, 0};
+    const int dy[4] = {0, 1, 0, -1};
+    
+    int in(int i, int j, int n, int m)
+    {
+        if(i < 0) return 0;
+        if(j < 0) return 0;
+        if(j >= m) return 0;
+        if(i >= n) return 0;
+        return 1;
+    }
+    
+    int dfs(int n, int m, int x, int y, vector<vector<char>> &board, int idx, string word)
+    {
+        
+        if(board[x][y] != word[idx]) return 0;
+        if(idx == ((int)word.size() - 1)) return 1;
+        char ch = board[x][y];
+        board[x][y] = '*';
+        int tt = 0;
+        for(int i = 0; i < 4; i++)
+        {
+            int xx = x + dx[i];
+            int yy = y + dy[i];
+            
+            if(in(xx, yy, n, m) && board[xx][yy] != '*')
+                tt |= dfs(n, m, xx, yy, board, idx + 1, word);
+            if(tt) break;
+            
+        }
+        board[x][y] = ch;
+        return tt;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        
+        int n = (int)board.size();
+        int m = (int)board[0].size();
+        
+        
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                int res = dfs(n, m, i, j, board, 0, word);
+                if(res) return true;
+            }
+        }
+        
+        return false;
+    }
+};
